@@ -1,15 +1,19 @@
-N,K = map(int,raw_input().split())
-arr = sorted(list(map(int,raw_input().split())), reverse=True)
+n,k = map(int,raw_input().split())
+arr = map(int,raw_input().split())
 
-lo = arr[N/2]
-hi = arr[0] + K + 1
+arr = sorted(arr)
+lo = arr[n/2]
+hi = arr[len(arr)-1] + k + 1
 
 while lo < hi:
-    mid = (lo+hi)/2
-    need = 0
-    for i in range(N/2+1):
-        need += max(0, mid-arr[i])
-    if need <= K:
+    mid = (lo+hi)/2     # desired median
+    cnt = 0
+    for i in range(n/2, n):
+        if arr[i] >= mid:
+            continue
+        else:
+            cnt += mid - arr[i]
+    if cnt <= k:
         lo = mid + 1
     else:
         hi = mid

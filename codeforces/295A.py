@@ -1,27 +1,32 @@
-N,M,K = map(int,raw_input().split())
+n,m,k = map(int,raw_input().split())
 arr = list(map(int,raw_input().split()))
-
 ops = []
-for i in range(M):
-    ops.append(list(map(int,raw_input().split())))
+qs = []
+for i in range(m):
+    l,r,d = map(int,raw_input().split())
+    ops.append([l,r,d])
 
-diff = [0 for x in range(M+1)]
-for i in range(K):
-    a,b = map(int,raw_input().split())
-    diff[a-1] += 1
-    diff[b] -= 1
+for i in range(k):
+    x,y = map(int,raw_input().split())
+    qs.append([x,y])
 
-for i in range(M):
+freq = [0 for x in range(m+1)]
+for i in range(k):
+    freq[qs[i][0]-1] += 1
+    freq[qs[i][1]] -= 1
+
+for i in range(m):
+    freq[i+1] += freq[i]
+
+diff = [0 for x in range(n+1)]
+for i in range(m):
+    diff[ops[i][0]-1] += freq[i] * ops[i][2]
+    diff[ops[i][1]] -= freq[i] * ops[i][2]
+
+for i in range(n):
     diff[i+1] += diff[i]
 
-diff2 = [0 for x in range(N+1)]
-
-for i in range(M):
-    diff2[ops[i][0]-1] += ops[i][2] * diff[i]
-    diff2[ops[i][1]] -= ops[i][2] * diff[i]
-
-for i in range(N):
-    diff2[i+1] += diff2[i]
-    arr[i] += diff2[i]
+for i in range(n):
+    arr[i] += diff[i]
 
 print " ".join(str(x) for x in arr)
